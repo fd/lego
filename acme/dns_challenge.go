@@ -258,8 +258,10 @@ func FindZoneByFqdn(fqdn string, nameservers []string) (string, error) {
 			for _, ans := range in.Answer {
 				if soa, ok := ans.(*dns.SOA); ok {
 					zone := soa.Hdr.Name
-					fqdnToZone[fqdn] = zone
-					return zone, nil
+					if strings.HasSuffix(domain, zone) {
+						fqdnToZone[fqdn] = zone
+						return zone, nil
+					}
 				}
 			}
 		}
