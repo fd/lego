@@ -158,7 +158,7 @@ func (s *dnsChallenge) CleanUp(chlng challenge, domain string) error {
 func updateDomainWithCName(r *dns.Msg, fqdn string) string {
 	for _, rr := range r.Answer {
 		if cn, ok := rr.(*dns.CNAME); ok {
-			if cn.Hdr.Name == fqdn {
+			if cn.Hdr.Name == fqdn && strings.HasPrefix(cn.Target, "_acme-challenge.") {
 				fqdn = cn.Target
 				break
 			}
